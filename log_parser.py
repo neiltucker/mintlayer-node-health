@@ -46,25 +46,32 @@ class MintlayerLogParser:
         self._bootstrap_logs()  # Populate state from existing logs
 
     # -----------------------------
-    # Bootstrap Function (reads last N lines on startup)
+    # Bootstrap Function (reads existing log on startup)
+    # -----------------------------
+    # Purpose: Populate initial parser state (version, network, last block, peers) 
+    # by scanning recent log lines. This ensures that the parser can report a real
+    # node health snapshot even if it starts after the node has been running for a while.
+    # It processes up to `lines_to_read` recent lines, looking for:
+    # - "Starting Mintlayer Node vX.Y.Z" to get version and node start time
+    # - "Network: ..." to get network
+    # - "Imported block ..." for last block height
+    # - Peer connect/disconnect events
+    # After bootstrapping, the parser switches to tail mode (reading new log entries only).
     # -----------------------------
     def _bootstrap_logs(self, lines_to_read=10000):
-        if not self.log_path.exists():
-            return
-        with self.log_path.open("rb") as f:
-            try:
-                f.seek(-lines_to_read * 200, 2)  # estimate 200 bytes per line
-            except OSError:
-                f.seek(0)
-            raw_lines = f.read().splitlines()
+    	if not self.log_path.exists():
+        	return
 
-        for line in raw_lines:
-            try:
-                self._process_line(line.decode("utf-8", errors="ignore"))
-            except Exception:
-                continue  # ignore corrupt lines
-        # Set offset to end of file after bootstrap
-        self.offset = self.log_path.stat().st_size
+    	with self.log_path.open("r", encoding="utf-8", errors="ignore") as f:
+        	lines = f.readlines()
+
+    	# Process all lines from oldest to newest to catch startup
+    	for line in lines[-lines_to_read:]:  # keep tail length for efficiency
+        	self._process_line(line)
+
+    	# Only move the offset to EOF for tailing
+    	self.offset = self.log_path.stat().st_size
+
 
     # -----------------------------
     # Polling function (call every 30s)
