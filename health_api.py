@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 import uvicorn
 
 LOG_DIR = Path.home() / ".mintlayer" / "mainnet" / "logs"
-HEALTH_LOG = LOG_DIR / "mintlayer_health.log"
+HEALTH_LOG = LOG_DIR / "mintlayer-health.log"
 
 app = FastAPI(
     title="Mintlayer Node Health API",
@@ -70,3 +70,4 @@ if __name__ == "__main__":
         port=3033,
         log_level="info",
     )
+
