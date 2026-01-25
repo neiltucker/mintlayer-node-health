@@ -2,8 +2,11 @@ import re
 import time
 import json
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 
+# -----------------------------
+# Regex Patterns for Phase-1
+# -----------------------------
 LOG_PATTERNS = {
     "startup": re.compile(r"Starting.*Mintlayer.*v(?P<version>\d+\.\d+\.\d+)"),
     "network": re.compile(r"Network:\s+(?P<network>mainnet|testnet|regtest)"),
@@ -15,16 +18,21 @@ LOG_PATTERNS = {
     "panic": re.compile(r"panicked|fatal error"),
 }
 
+# -----------------------------
+# Log File Locations
+# -----------------------------
 LOG_DIR = Path.home() / ".mintlayer" / "mainnet" / "logs"
 NODE_LOG = LOG_DIR / "mintlayer-node-gui.log"
 HEALTH_LOG = LOG_DIR / "mintlayer_health.log"
 
-
+# -----------------------------
+# Parser Class
+# -----------------------------
 class MintlayerLogParser:
     def __init__(self, log_path):
         self.log_path = Path(log_path)
         self.offset = 0
-        self.start_time = int(time.time())
+        self.node_start_time = None  # Track actual node start
         self.state = {
             "version": None,
             "network": None,
@@ -35,7 +43,32 @@ class MintlayerLogParser:
             "db_error": False,
             "panic": False,
         }
+        self._bootstrap_logs()  # Populate state from existing logs
 
+    # -----------------------------
+    # Bootstrap Function (reads last N lines on startup)
+    # -----------------------------
+    def _bootstrap_logs(self, lines_to_read=10000):
+        if not self.log_path.exists():
+            return
+        with self.log_path.open("rb") as f:
+            try:
+                f.seek(-lines_to_read * 200, 2)  # estimate 200 bytes per line
+            except OSError:
+                f.seek(0)
+            raw_lines = f.read().splitlines()
+
+        for line in raw_lines:
+            try:
+                self._process_line(line.decode("utf-8", errors="ignore"))
+            except Exception:
+                continue  # ignore corrupt lines
+        # Set offset to end of file after bootstrap
+        self.offset = self.log_path.stat().st_size
+
+    # -----------------------------
+    # Polling function (call every 30s)
+    # -----------------------------
     def poll(self):
         if not self.log_path.exists():
             return self._health_snapshot()
@@ -48,11 +81,16 @@ class MintlayerLogParser:
 
         return self._health_snapshot()
 
+    # -----------------------------
+    # Line Processing
+    # -----------------------------
     def _process_line(self, line):
         now = int(time.time())
 
         if m := LOG_PATTERNS["startup"].search(line):
             self.state["version"] = m.group("version")
+            if self.node_start_time is None:
+                self.node_start_time = now
 
         elif m := LOG_PATTERNS["network"].search(line):
             self.state["network"] = m.group("network")
@@ -76,15 +114,27 @@ class MintlayerLogParser:
         elif LOG_PATTERNS["panic"].search(line):
             self.state["panic"] = True
 
+    # -----------------------------
+    # Create Health Snapshot
+    # -----------------------------
     def _health_snapshot(self):
         now = int(time.time())
+        # Node uptime
+        if self.node_start_time:
+            uptime = now - self.node_start_time
+        else:
+            uptime = None
 
+        # Sync stalled logic
         sync_stalled = (
             self.state["last_block_time"] is not None
             and now - self.state["last_block_time"] > 300
         )
 
-        if self.state["panic"] or self.state["db_error"]:
+        # Determine overall health
+        if not self.state["version"] or not self.state["network"]:
+            overall = "initializing"
+        elif self.state["panic"] or self.state["db_error"]:
             overall = "critical"
         elif sync_stalled or self.state["peer_count"] == 0:
             overall = "degraded"
@@ -92,18 +142,18 @@ class MintlayerLogParser:
             overall = "healthy"
 
         return {
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "overall_health": overall,
             "node": {
                 "version": self.state["version"],
                 "network": self.state["network"],
-                "uptime_seconds": now - self.start_time,
+                "uptime_seconds": uptime,
             },
             "chain": {
                 "best_block": self.state["best_block"],
-                "last_block_seen_seconds_ago": (
-                    None if self.state["last_block_time"] is None
-                    else now - self.state["last_block_time"]
-                ),
+                "last_block_seen_seconds_ago": None
+                if self.state["last_block_time"] is None
+                else now - self.state["last_block_time"],
                 "sync_stalled": sync_stalled,
             },
             "peers": {
@@ -116,19 +166,23 @@ class MintlayerLogParser:
                 "db_error": self.state["db_error"],
                 "panic": self.state["panic"],
             },
-            "overall_health": overall,
         }
 
 
+# -----------------------------
+# Write Health Snapshot to File
+# -----------------------------
 def write_health_log(entry):
     LOG_DIR.mkdir(parents=True, exist_ok=True)
     with HEALTH_LOG.open("a", encoding="utf-8") as f:
         f.write(json.dumps(entry) + "\n")
 
 
+# -----------------------------
+# Run Parser Continuously
+# -----------------------------
 if __name__ == "__main__":
     parser = MintlayerLogParser(NODE_LOG)
-
     while True:
         health = parser.poll()
         write_health_log(health)
