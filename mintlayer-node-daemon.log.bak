@@ -1,0 +1,256 @@
+2026-01-25T23:17:56.135365Z  INFO node_lib::runner: Command line options: OptionsWithResolvedCommand { top_level: TopLevelOptions { data_dir: None, create_data_dir_if_missing: None, log_to_file: Some(true) }, command: Mainnet(RunOptions { clean_data: None, blockprod_min_peers_to_produce_blocks: None, blockprod_skip_ibd_check: None, blockprod_use_current_time_if_non_pos: None, storage_backend: None, node_type: None, mock_time: None, max_db_commit_attempts: None, max_orphan_blocks: None, p2p_networking_enabled: None, p2p_bind_addresses: None, p2p_socks5_proxy: None, p2p_disable_noise: None, p2p_boot_nodes: None, p2p_reserved_nodes: None, p2p_whitelist_addr: None, p2p_max_inbound_connections: None, p2p_discouragement_threshold: None, p2p_discouragement_duration: None, p2p_outbound_connection_timeout: None, p2p_ping_check_period: None, p2p_ping_timeout: None, p2p_sync_stalling_timeout: None, p2p_max_clock_diff: None, p2p_force_dns_query_if_no_global_addresses_known: None, max_tip_age: None, rpc_bind_address: None, rpc_enabled: None, rpc_username: None, rpc_password: None, rpc_cookie_file: None, min_tx_relay_fee_rate: None, force_allow_run_as_root_outer: ForceRunAsRootOptions { force_allow_run_as_root: false }, enable_chainstate_heavy_checks: None }) }
+2026-01-25T23:17:56.135565Z  INFO node_lib::runner: Starting mintlayer-core version 1.2.0
+2026-01-25T23:17:56.135774Z  INFO node_lib::runner: Starting with the following config:
+ NodeConfigFile {
+    blockprod: Some(
+        BlockProdConfigFile {
+            min_peers_to_produce_blocks: Some(
+                3,
+            ),
+            skip_ibd_check: Some(
+                false,
+            ),
+            use_current_time_if_non_pos: Some(
+                false,
+            ),
+        },
+    ),
+    chainstate: Some(
+        ChainstateLauncherConfigFile {
+            storage_backend: Lmdb,
+            chainstate_config: ChainstateConfigFile {
+                max_db_commit_attempts: None,
+                max_orphan_blocks: None,
+                min_max_bootstrap_import_buffer_sizes: None,
+                max_tip_age: None,
+                enable_heavy_checks: None,
+            },
+        },
+    ),
+    mempool: Some(
+        MempoolConfigFile {
+            min_tx_relay_fee_rate: None,
+        },
+    ),
+    p2p: Some(
+        P2pConfigFile {
+            networking_enabled: None,
+            bind_addresses: None,
+            socks5_proxy: None,
+            disable_noise: None,
+            boot_nodes: None,
+            reserved_nodes: None,
+            whitelisted_addresses: None,
+            max_inbound_connections: None,
+            discouragement_threshold: None,
+            discouragement_duration: None,
+            max_clock_diff: None,
+            outbound_connection_timeout: None,
+            ping_check_period: None,
+            ping_timeout: None,
+            sync_stalling_timeout: None,
+            node_type: None,
+            force_dns_query_if_no_global_addresses_known: None,
+        },
+    ),
+    rpc: Some(
+        RpcConfigFile {
+            rpc_enabled: Some(
+                true,
+            ),
+            bind_address: Some(
+                127.0.0.1:3030,
+            ),
+            username: None,
+            password: None,
+            cookie_file: None,
+        },
+    ),
+}
+2026-01-25T23:17:56.135870Z  INFO subsystem::manager::manager_impl: Initializing subsystem manager mintlayer
+2026-01-25T23:17:56.136585Z  INFO subsystem::manager::manager_impl: Registering subsystem mintlayer/chainstate
+2026-01-25T23:17:56.136604Z  INFO subsystem::manager::manager_impl: Registering subsystem mintlayer/mempool
+2026-01-25T23:17:56.136804Z  INFO subsystem::manager::manager_impl: Registering subsystem mintlayer/p2p
+2026-01-25T23:17:56.137068Z  INFO subsystem::manager::manager_impl: Registering subsystem mintlayer/blockprod
+2026-01-25T23:17:56.137087Z  INFO subsystem::manager::manager_impl: Registering subsystem mintlayer/rpc_test_functions
+2026-01-25T23:17:56.138797Z  INFO subsystem::manager::manager_impl: Registering subsystem mintlayer/rpc
+2026-01-25T23:17:56.138853Z  INFO subsystem::manager::manager_impl: Manager mintlayer starting subsystems
+2026-01-25T23:17:56.138940Z  INFO subsystem::task: Subsystem mintlayer/p2p starting
+2026-01-25T23:17:56.138961Z  INFO subsystem::task: Subsystem mintlayer/rpc_test_functions starting
+2026-01-25T23:17:56.138979Z  INFO subsystem::task: Subsystem mintlayer/rpc_test_functions started
+2026-01-25T23:17:56.139000Z  INFO subsystem::task: Subsystem mintlayer/blockprod starting
+2026-01-25T23:17:56.139014Z  INFO subsystem::task: Subsystem mintlayer/blockprod started
+2026-01-25T23:17:56.139039Z  INFO subsystem::task: Subsystem mintlayer/mempool starting
+2026-01-25T23:17:56.139076Z  INFO subsystem::task: Subsystem mintlayer/rpc starting
+2026-01-25T23:17:56.139085Z  INFO subsystem::task: Subsystem mintlayer/chainstate starting
+2026-01-25T23:17:56.139100Z  INFO mempool::interface::mempool_interface_impl: Starting mempool
+2026-01-25T23:17:56.139104Z  INFO subsystem::task: Subsystem mintlayer/rpc started
+2026-01-25T23:17:56.139114Z  INFO subsystem::task: Subsystem mintlayer/chainstate started
+2026-01-25T23:17:56.139476Z  INFO subsystem::task: Subsystem mintlayer/mempool started
+2026-01-25T23:17:56.139872Z  INFO subsystem::task: Subsystem mintlayer/p2p started
+2026-01-25T23:17:56.139902Z  INFO p2p::sync: Starting SyncManager
+2026-01-25T23:17:56.488007Z  INFO p2p::net::default_backend::backend: Assigning peer id 1 to peer at address SocketAddress(34.187.178.172:3031)
+2026-01-25T23:17:56.626048Z  INFO p2p::net::default_backend::backend: Assigning peer id 2 to peer at address SocketAddress(81.0.247.247:3031)
+2026-01-25T23:17:56.700730Z  INFO p2p::peer_manager: new peer accepted, peer_id: 1, address: SocketAddress(34.187.178.172:3031), role: OutboundBlockRelay, protocol_version: V3
+2026-01-25T23:17:56.865846Z  INFO p2p::peer_manager: new peer accepted, peer_id: 2, address: SocketAddress(81.0.247.247:3031), role: OutboundBlockRelay, protocol_version: V3
+2026-01-25T23:17:56.968412Z  INFO process_block{[3mblock_id[0m[2m=[0m1a49…9e15}: chainstate::detail: Processing block 1a49…9e15, attempt #1
+2026-01-25T23:17:57.029161Z  INFO process_block{[3mblock_id[0m[2m=[0m1a49…9e15}: chainstate::detail: NEW TIP in chainstate 1a49decf398a45e988db072814207f96ada2b4cbe2f97d40790beb11bb869e15 with height 521000, timestamp: 1769382880 (2026-01-25 23:14:40 UTC)
+2026-01-25T23:17:57.029274Z  INFO notify_chainstate_event{[3mevent[0m[2m=[0mNewTip(1a49…9e15, 521000)}: mempool::pool: New block tip: Id<Block>{1a49decf398a45e988db072814207f96ada2b4cbe2f97d40790beb11bb869e15} at height 521000
+2026-01-25T23:17:57.095043Z  INFO process_block{[3mblock_id[0m[2m=[0m1a65…d69f}: chainstate::detail: Processing block 1a65…d69f, attempt #1
+2026-01-25T23:17:57.140621Z  INFO process_block{[3mblock_id[0m[2m=[0m1a65…d69f}: chainstate::detail: NEW TIP in chainstate 1a65235524ae15d62ee28d57a695036bdb2c50eb07bd528ff66eaec543cbd69f with height 521001, timestamp: 1769382963 (2026-01-25 23:16:03 UTC)
+2026-01-25T23:17:57.140800Z  INFO notify_chainstate_event{[3mevent[0m[2m=[0mNewTip(1a65…d69f, 521001)}: mempool::pool: New block tip: Id<Block>{1a65235524ae15d62ee28d57a695036bdb2c50eb07bd528ff66eaec543cbd69f} at height 521001
+2026-01-25T23:17:57.143157Z  INFO process_block{[3mblock_id[0m[2m=[0m34e3…985c}: chainstate::detail: Processing block 34e3…985c, attempt #1
+2026-01-25T23:17:57.187307Z  INFO process_block{[3mblock_id[0m[2m=[0m34e3…985c}: chainstate::detail: NEW TIP in chainstate 34e31c9739bf6c0c5d211ba031d3f266b49d280efe3b2156233259d0bdca985c with height 521002, timestamp: 1769383065 (2026-01-25 23:17:45 UTC)
+2026-01-25T23:17:57.187511Z  INFO notify_chainstate_event{[3mevent[0m[2m=[0mNewTip(34e3…985c, 521002)}: mempool::pool: New block tip: Id<Block>{34e31c9739bf6c0c5d211ba031d3f266b49d280efe3b2156233259d0bdca985c} at height 521002
+2026-01-25T23:18:01.142803Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2001:bc8:1e80:1c51:dc00:ff:fe31:d1]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:18:01.142946Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2001:ee0:700a:4b50:316f:a44c:284:cc05]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:18:01.143076Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2607:7700:0:10:0:2:d5f6:2d3d]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:18:01.276033Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(209.38.232.184:3031): Networking error: IO error: connection refused
+2026-01-25T23:18:01.455797Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(93.66.232.6:3031): Networking error: IO error: connection refused
+2026-01-25T23:18:06.142602Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2a10:bcc6:4ef:0:2c64:8c57:8a88:6ed1]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:18:06.875704Z  INFO p2p::net::default_backend::backend: Assigning peer id 3 to peer at address SocketAddress(88.85.171.136:3031)
+2026-01-25T23:18:07.285708Z  INFO p2p::peer_manager: new peer accepted, peer_id: 3, address: SocketAddress(88.85.171.136:3031), role: OutboundFullRelay, protocol_version: V3
+2026-01-25T23:18:11.143233Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(5.31.164.240:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:11.143367Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(52.193.158.166:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:11.143457Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(80.254.166.114:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:11.143543Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(144.91.85.158:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:11.144377Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2001:bc8:710:f26:dc00:ff:fe2a:37d3]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:18:16.142987Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(34.83.21.100:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:16.143093Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(51.15.205.185:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:16.143150Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(91.73.57.43:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:17.143001Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2607:7700:0:10:0:2:3353:8c73]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:18:17.397863Z  INFO p2p::net::default_backend::backend: Assigning peer id 4 to peer at address SocketAddress(23.132.28.72:3031)
+2026-01-25T23:18:17.561086Z  INFO p2p::peer_manager: new peer accepted, peer_id: 4, address: SocketAddress(23.132.28.72:3031), role: OutboundFullRelay, protocol_version: V3
+2026-01-25T23:18:17.769537Z  INFO p2p::net::default_backend::backend: Assigning peer id 5 to peer at address SocketAddress(151.115.60.31:3031)
+2026-01-25T23:18:18.125012Z  INFO p2p::peer_manager: new peer accepted, peer_id: 5, address: SocketAddress(151.115.60.31:3031), role: OutboundFullRelay, protocol_version: V3
+2026-01-25T23:18:21.145749Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(31.202.17.39:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:23.142009Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2607:7700:0:10:0:2:6dc7:6141]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:18:27.143361Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(65.109.155.234:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:27.143427Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(207.180.243.235:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:27.143450Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(213.122.139.57:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:27.143472Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(217.164.45.155:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:33.142980Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(159.224.229.18:12321): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:35.730762Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(104.251.245.195:3031): Networking error: IO error: connection refused
+2026-01-25T23:18:39.143006Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(8.210.223.32:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:39.143108Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(147.93.56.208:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:39.143197Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(151.48.84.62:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:39.143255Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(195.201.56.175:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:40.142517Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2a01:4f9:3080:12c4::2]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:18:40.142680Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2a10:bcc6:4ef:0:18c4:4d93:18b3:f859]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:18:40.664131Z  INFO p2p::net::default_backend::backend: Assigning peer id 6 to peer at address SocketAddress(173.249.9.236:3031)
+2026-01-25T23:18:40.923948Z  INFO p2p::peer_manager: new peer accepted, peer_id: 6, address: SocketAddress(173.249.9.236:3031), role: OutboundFullRelay, protocol_version: V3
+2026-01-25T23:18:43.349994Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(193.200.238.66:3031): Networking error: IO error: host unreachable
+2026-01-25T23:18:44.380235Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(172.233.61.126:41828): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:46.141030Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2001:ee0:700a:5b17:ec3f:ffb6:fca3:f784]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:18:46.141140Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2001:1c00:338:6900:9e6b:ff:fe22:6f4e]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:18:46.141219Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2607:fa49:6040:cb00:d13f:2f80:d6a1:bbc0]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:18:50.143040Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(213.246.45.61:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:18:56.141496Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(43.167.188.46:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:19:01.142993Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(5.189.152.178:12357): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:19:01.143189Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(51.83.140.115:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:19:01.143307Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(87.106.67.207:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:19:01.143412Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(5.9.167.53:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:19:01.144260Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([64:ff9b::87b5:1371]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:19:06.143247Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(217.43.134.113:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:19:07.142246Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2a02:8071:6440:120:598:b0e4:1e27:54]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:19:13.141814Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2a00:23c5:e2eb:2e01:8c4c:3b76:a34:e6e0]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:19:17.142938Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(82.11.176.57:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:19:17.143053Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(87.106.3.113:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:19:17.143144Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(164.68.118.147:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:19:17.143239Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(203.210.139.95:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:19:19.731243Z  INFO p2p::net::default_backend::backend: Assigning peer id 7 to peer at address SocketAddress(152.53.205.221:3031)
+2026-01-25T23:19:20.063307Z  INFO p2p::peer_manager: new peer accepted, peer_id: 7, address: SocketAddress(152.53.205.221:3031), role: OutboundBlockRelay, protocol_version: V3
+2026-01-25T23:19:26.437301Z  INFO process_block{[3mblock_id[0m[2m=[0m2572…9e9c}: chainstate::detail: Processing block 2572…9e9c, attempt #1
+2026-01-25T23:19:26.489140Z  INFO process_block{[3mblock_id[0m[2m=[0m2572…9e9c}: chainstate::detail: NEW TIP in chainstate 2572dd452b826d00a76117a00e00ff1a16f9a25202c6957135ebd06668189e9c with height 521003, timestamp: 1769383191 (2026-01-25 23:19:51 UTC)
+2026-01-25T23:19:26.489288Z  INFO notify_chainstate_event{[3mevent[0m[2m=[0mNewTip(2572…9e9c, 521003)}: mempool::pool: New block tip: Id<Block>{2572dd452b826d00a76117a00e00ff1a16f9a25202c6957135ebd06668189e9c} at height 521003
+2026-01-25T23:19:29.142792Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(34.83.21.100:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:19:29.142908Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(47.242.186.213:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:19:29.142969Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(51.159.235.221:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:19:29.143027Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(82.222.195.138:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:19:31.144403Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2001:ee0:700a:4b50:5de5:89b:a265:ac59]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:19:31.144576Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2607:7700:0:10:0:2:adf9:9ec]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:19:34.356741Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(193.200.238.66:3031): Networking error: IO error: host unreachable
+2026-01-25T23:19:37.142789Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2607:7700:0:10:0:2:339f:e890]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:19:37.630127Z  INFO p2p::net::default_backend::backend: Assigning peer id 8 to peer at address SocketAddress(34.77.105.222:3031)
+2026-01-25T23:19:37.910650Z  INFO p2p::peer_manager: new peer accepted, peer_id: 8, address: SocketAddress(34.77.105.222:3031), role: OutboundFullRelay, protocol_version: V3
+2026-01-25T23:19:41.144287Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(78.210.155.191:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:19:43.141910Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2607:7700:0:10:0:2:6703:3d15]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:19:43.142242Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2a02:c207:2248:4620::1]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:19:47.143533Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(167.86.116.68:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:19:49.141464Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([64:ff9b::9773:23ce]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:19:49.141733Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2607:7700:0:10:0:2:3353:8c73]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:19:55.142107Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2a10:bcc6:4ef:0:e459:b31c:82c8:e4b1]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:19:55.639687Z  INFO p2p::net::default_backend::backend: Assigning peer id 9 to peer at address SocketAddress(172.232.43.9:3031)
+2026-01-25T23:19:55.925693Z  INFO p2p::peer_manager: new peer accepted, peer_id: 9, address: SocketAddress(172.232.43.9:3031), role: OutboundFullRelay, protocol_version: V3
+2026-01-25T23:19:59.142221Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(203.210.139.95:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:20:10.466252Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(81.169.178.222:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:20:10.466343Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(167.86.88.170:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:20:10.466976Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2607:7700:0:10:0:2:ace8:3284]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:20:16.140904Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2a02:2479:4c:1d00::1]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:20:24.329561Z  INFO process_block{[3mblock_id[0m[2m=[0m9986…aeff}: chainstate::detail: Processing block 9986…aeff, attempt #1
+2026-01-25T23:20:24.398047Z  INFO process_block{[3mblock_id[0m[2m=[0m9986…aeff}: chainstate::detail: NEW TIP in chainstate 998696f8111d344897a9ac19a4c2f59ca1c4697e90f0cd976422c92b131faeff with height 521004, timestamp: 1769383253 (2026-01-25 23:20:53 UTC)
+2026-01-25T23:20:24.398097Z  INFO notify_chainstate_event{[3mevent[0m[2m=[0mNewTip(9986…aeff, 521004)}: mempool::pool: New block tip: Id<Block>{998696f8111d344897a9ac19a4c2f59ca1c4697e90f0cd976422c92b131faeff} at height 521004
+2026-01-25T23:20:26.142033Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(144.91.120.236:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:20:31.141528Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(31.202.17.39:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:20:35.370310Z  INFO process_block{[3mblock_id[0m[2m=[0m5e3d…9924}: chainstate::detail: Processing block 5e3d…9924, attempt #1
+2026-01-25T23:20:35.425341Z  INFO process_block{[3mblock_id[0m[2m=[0m5e3d…9924}: chainstate::detail: NEW TIP in chainstate 5e3d9bd2b702a379c65b54def45c4f7888db8db3c85cd81113c6500314e29924 with height 521005, timestamp: 1769383264 (2026-01-25 23:21:04 UTC)
+2026-01-25T23:20:35.427185Z  INFO notify_chainstate_event{[3mevent[0m[2m=[0mNewTip(5e3d…9924, 521005)}: mempool::pool: New block tip: Id<Block>{5e3d9bd2b702a379c65b54def45c4f7888db8db3c85cd81113c6500314e29924} at height 521005
+2026-01-25T23:20:36.144386Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(81.169.178.222:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:20:38.140654Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2001:bc8:711:2037:dc00:ff:fee5:8b3b]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:20:42.142536Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(79.23.13.9:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:20:44.407865Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(139.162.4.113:41828): Networking error: IO error: host unreachable
+2026-01-25T23:20:54.142475Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(154.160.18.26:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:21:00.142793Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(139.177.176.199:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:21:06.142754Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(31.202.17.39:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:21:07.141211Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2607:7700:0:10:0:2:2253:1564]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:21:12.141445Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(5.189.152.178:12353): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:21:17.141826Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([64:ff9b::339f:b3e5]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:21:22.142916Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(35.240.76.88:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:21:22.143290Z  INFO p2p::peer_manager: block relay peer 7 is selected for eviction
+2026-01-25T23:21:22.143891Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2607:7700:0:10:0:2:91df:65b8]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:21:22.144302Z  INFO p2p::peer_manager: peer disconnected, peer_id: 7, address: SocketAddress(152.53.205.221:3031)
+2026-01-25T23:21:28.141468Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2602:fa59:1:9b::1]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:21:32.144946Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(178.20.41.253:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:21:33.690015Z  INFO p2p::net::default_backend::backend: Assigning peer id 10 to peer at address SocketAddress(86.48.5.237:3031)
+2026-01-25T23:21:34.006183Z  INFO p2p::peer_manager: new peer accepted, peer_id: 10, address: SocketAddress(86.48.5.237:3031), role: OutboundFullRelay, protocol_version: V3
+2026-01-25T23:21:38.142820Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(81.169.178.222:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:21:43.143530Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(147.93.56.208:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:21:43.144983Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2804:3f9c:12:8700:c4ba:d559:cdc7:9db2]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:21:49.426899Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(223.205.75.226:3031): Networking error: IO error: connection refused
+2026-01-25T23:21:53.145858Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(178.249.211.77:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:21:54.142063Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2607:7700:0:10:0:2:6703:3d15]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:22:04.143159Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(103.3.61.21:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:22:06.697917Z  INFO p2p::net::default_backend::backend: Assigning peer id 11 to peer at address SocketAddress(5.189.152.178:3031)
+2026-01-25T23:22:07.012484Z  INFO p2p::peer_manager: new peer accepted, peer_id: 11, address: SocketAddress(5.189.152.178:3031), role: OutboundFullRelay, protocol_version: V3
+2026-01-25T23:22:10.143015Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(34.134.60.185:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:22:12.141204Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2001:bc8:1d90:307:dc00:ff:fe0c:64c1]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:22:18.141123Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2001:bc8:5090:1a2a:dc00:ff:fe41:97dd]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:22:32.014023Z  WARN p2p::sync::peer::block_manager: [peer id = 11] Disconnecting the peer for ignoring requests, headers_req_stalling = true, blocks_req_stalling = false
+2026-01-25T23:22:32.014606Z  INFO p2p::peer_manager: peer disconnected, peer_id: 11, address: SocketAddress(5.189.152.178:3031)
+2026-01-25T23:22:34.142562Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(51.158.236.130:41828): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:22:37.141157Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2a03:7380:21bc:1:1010:9c6:b5cd:e5de]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:22:43.140948Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2a00:23c5:e2eb:2e01:b559:202:7d43:1c3]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:22:47.142013Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(178.45.181.30:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:22:49.364065Z  INFO p2p::net::default_backend::backend: Assigning peer id 12 to peer at address SocketAddress(54.39.214.156:3031)
+2026-01-25T23:22:49.514021Z  INFO p2p::peer_manager: new peer accepted, peer_id: 12, address: SocketAddress(54.39.214.156:3031), role: OutboundFullRelay, protocol_version: V3
+2026-01-25T23:22:59.141977Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(87.106.67.207:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:23:09.143753Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(195.201.56.175:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:23:09.684462Z  INFO process_block{[3mblock_id[0m[2m=[0m17ce…89db}: chainstate::detail: Processing block 17ce…89db, attempt #1
+2026-01-25T23:23:09.735185Z  INFO process_block{[3mblock_id[0m[2m=[0m17ce…89db}: chainstate::detail: NEW TIP in chainstate 17ce1a0e9a8a6aad9380d5b6a2249c19764a4b75fb4585527fb3605e6aeb89db with height 521006, timestamp: 1769383419 (2026-01-25 23:23:39 UTC)
+2026-01-25T23:23:09.735459Z  INFO notify_chainstate_event{[3mevent[0m[2m=[0mNewTip(17ce…89db, 521006)}: mempool::pool: New block tip: Id<Block>{17ce1a0e9a8a6aad9380d5b6a2249c19764a4b75fb4585527fb3605e6aeb89db} at height 521006
+2026-01-25T23:23:11.141967Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2607:7700:0:10:0:2:6703:3d15]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:23:27.141715Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(51.158.236.130:41828): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:23:27.141851Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress(86.61.74.91:3031): Failed to dial peer: Connection refused or timed out
+2026-01-25T23:23:32.141217Z  INFO p2p::net::default_backend::backend: Failed to establish connection to SocketAddress([2a03:94e0:ffff:193:200:238:0:25]:3031): Networking error: IO error: network unreachable
+2026-01-25T23:23:35.807227Z  INFO subsystem::manager::manager_impl: Manager mintlayer shutting down: Ctrl-C signal received
+2026-01-25T23:23:35.807461Z  INFO subsystem::task: Subsystem mintlayer/rpc terminated
+2026-01-25T23:23:35.807526Z  INFO subsystem::task: Subsystem mintlayer/rpc_test_functions terminated
+2026-01-25T23:23:35.807598Z  INFO subsystem::task: Subsystem mintlayer/blockprod terminated
+2026-01-25T23:23:35.807682Z  INFO blockprod::detail::job_manager::jobs_container: Stopping block production job manager
+2026-01-25T23:23:35.807752Z  INFO p2p::net::default_backend::default_networking_service: Backend is shut down
+2026-01-25T23:23:35.807891Z  INFO p2p: Sync manager is shut down
+2026-01-25T23:23:35.808193Z  INFO p2p: Peer manager is shut down
+2026-01-25T23:23:35.808220Z  INFO subsystem::task: Subsystem mintlayer/p2p terminated
+2026-01-25T23:23:35.808280Z  INFO subsystem::task: Subsystem mintlayer/mempool terminated
+2026-01-25T23:23:35.810568Z  INFO subsystem::task: Subsystem mintlayer/chainstate terminated
+2026-01-25T23:23:35.810617Z  INFO subsystem::manager::manager_impl: Manager mintlayer terminated
