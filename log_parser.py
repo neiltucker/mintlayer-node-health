@@ -23,7 +23,7 @@ LOG_PATTERNS = {
 # -----------------------------
 LOG_DIR = Path.home() / ".mintlayer" / "mainnet" / "logs"
 NODE_LOG = LOG_DIR / "mintlayer-node-gui.log"
-HEALTH_LOG = LOG_DIR / "mintlayer_health.log"
+HEALTH_LOG = LOG_DIR / "mintlayer-health.log" 
 
 # -----------------------------
 # Parser Class
