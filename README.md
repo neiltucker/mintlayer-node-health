@@ -1,29 +1,94 @@
 ## README.md
 
-# Mintlayer Node Health Monitoring - Phase 1
+# Mintlayer Node Health Monitoring (Phase 1)
 
 ## Overview
-This repository contains all documentation and reference material for the Phase 1 implementation of a Mintlayer Node Health Monitoring Dashboard. Phase 1 focuses on real-time monitoring and critical metrics without historical data.
+This project provides a **read-only health monitoring system** for Mintlayer nodes.
 
-## Features
-- Node identity & metadata
-- Node version & fork compatibility
-- Sync status & block lag
-- Peer count & connectivity
-- Online/offline status
-- Pool activity & delegations
-- Alert system for critical and warning states
-- Delegator-facing health badges
+It enables node operators and network observers to:
+- Verify node health
+- Detect stalled syncs
+- Confirm version compatibility
+- Safely expose health status
 
-## Usage
-- Review the Markdown files in `docs/` for design and schema guidance
-- Use `api/endpoints.md` for Phase-1 API structure
-- Examples are provided in `examples/`
-- All files can be committed to a private GitHub repository for version control and collaboration
+---
 
-## Next Steps
-- Implement Phase-1 pollers according to the design
-- Build the dashboard UI based on `Dashboard_Design.md`
-- Integrate alert logic and display badges
-- Prepare for Phase-2 extensions such as historical data and visualizations
+## Components
 
+### log_parser.py
+- Polls Mintlayer node logs every 30 seconds
+- Supports GUI and daemon logs
+- Produces structured health snapshots
+- Writes JSON lines to `mintlayer-health.log`
+
+### health_api.py
+- Read-only FastAPI service
+- Serves latest health snapshot
+- Provides historical inspection endpoints
+
+---
+
+## Directory Layout
+
+```text
+~/.mintlayer/mainnet/logs/
+├── mintlayer-node-gui.log
+├── mintlayer-node-daemon.log
+└── mintlayer-health.log
+```
+
+---
+
+## Health API Endpoints
+
+| Endpoint | Description |
+|-------|-------------|
+| `/health` | Latest health snapshot |
+| `/health/raw` | Raw health log entries |
+| `/health/history` | Bounded history |
+| `/status` | Liveness check |
+
+---
+
+## Security Model
+- Read-only
+- No RPC exposure
+- No command execution
+- Local-first deployment
+- Optional firewall restriction
+
+---
+
+## Phase 1 Goals
+- Operational visibility
+- Upgrade readiness detection
+- Network stability monitoring
+- Explorer integration readiness
+
+---
+
+## Non-Goals
+- Validator rewards
+- Wallet management
+- Consensus participation
+- Historical analytics
+
+---
+
+## Roadmap
+
+### Phase 1 (Completed)
+- Health schema
+- Log-based telemetry
+- Read-only API
+
+### Phase 2 (Planned)
+- RPC-based authoritative data
+- Wallet & staking state
+- Disk and DB health
+- Alerting integrations
+
+---
+
+## License
+MIT (recommended)
