@@ -239,7 +239,7 @@ def parse_log_file(file_path):
     health_data["node"]["network"] = calculate_network_status(process_block_age)
     
     # PEERS ESTIMATE
-    health_data["peers"]["peers_estimate"] = max(0, peer_accepted_count - peer_disconnected_count)
+    health_data["peers"]["peers_estimate"] = min(max(0, peer_accepted_count - peer_disconnected_count),12)
     
     # FORK COMPATIBLE (version must be >= 1.2.0)
     if health_data["node"]["version"]:
