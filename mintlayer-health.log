@@ -1,1 +1,3 @@
-{"timestamp": "2026-01-25T23:41:08.155565+00:00", "overall_health": "initializing", "node": {"version": null, "network": null, "uptime_seconds": null}, "chain": {"best_block": null, "last_block_seen_seconds_ago": null, "sync_stalled": false}, "peers": {"count": 0}, "consensus": {"fork_compatible": true}, "errors": {"db_error": false, "panic": false}}
+{"timestamp": "2026-01-25T23:41:08.155565+00:00", "overall_health": "initializing", "node": {"version": null, "network": null, "uptime_seconds": null}, "chain": 
+{"best_block": null, "last_block_seen_seconds_ago": null, "sync_stalled": false}, "peers": {"count": 0}, "consensus": 
+{"fork_compatible": true}, "errors": {"db_error": false, "panic": false}}
