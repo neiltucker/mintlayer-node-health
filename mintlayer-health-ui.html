@@ -140,7 +140,7 @@ async function updateHealth() {
     document.getElementById("chain-sync-stalled").innerText = data.chain.sync_stalled ? "Yes" : "No";
 
     // Peers
-    document.getElementById("peers-count").innerText = data.peers.count ?? "–";
+    document.getElementById("peers-count").innerText = data.peers.peers_estimate ?? "–";
 
     // Consensus
     document.getElementById("consensus-fork").innerText = data.consensus.fork_compatible ? "Yes" : "No";
