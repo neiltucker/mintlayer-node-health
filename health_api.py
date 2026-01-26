@@ -39,14 +39,23 @@ def read_last_health_entry():
         raise ValueError("Health log is empty")
 
     # Read from the end to get the most recent entry
-    for line in reversed(lines):
-        line = line.strip()
-        if line:  # Skip empty lines
-            try:
-                return json.loads(line)
-            except json.JSONDecodeError as e:
-                # Skip malformed lines and try the previous one
-                continue
+    # Filter out empty lines first, then get the last one
+    valid_lines = [line.strip() for line in lines if line.strip()]
+    
+    if not valid_lines:
+        raise ValueError("Health log contains no valid entries")
+    
+    # Start from the very last line and work backwards
+    for line in reversed(valid_lines):
+        try:
+            data = json.loads(line)
+            # Debug: Print what we're reading (remove this after debugging)
+            print(f"[API] Reading entry from {data.get('timestamp', 'unknown')} - Health: {data.get('overall_health', 'unknown')}")
+            return data
+        except json.JSONDecodeError as e:
+            # Skip malformed lines and try the previous one
+            print(f"[API] Skipping malformed line: {line[:50]}...")
+            continue
     
     raise ValueError("No valid JSON entries found in health log")
 
@@ -179,6 +188,48 @@ def health_history(limit: int = 100):
     }
 
 
+@app.get("/debug/last-entries")
+def debug_last_entries(count: int = 5):
+    """
+    Debug endpoint: Show the last N entries with timestamps
+    """
+    if not HEALTH_LOG.exists():
+        raise HTTPException(
+            status_code=503,
+            detail=f"Health log not found at {HEALTH_LOG}"
+        )
+    
+    try:
+        with HEALTH_LOG.open("r", encoding="utf-8") as f:
+            lines = f.readlines()
+    except Exception as e:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Error reading health log: {e}"
+        )
+    
+    # Get last N lines
+    entries = []
+    for line in reversed(lines[-count:]):
+        line = line.strip()
+        if line:
+            try:
+                data = json.loads(line)
+                entries.append({
+                    "timestamp": data.get("timestamp"),
+                    "overall_health": data.get("overall_health"),
+                    "network": data.get("node", {}).get("network"),
+                    "peers_estimate": data.get("peers", {}).get("peers_estimate")
+                })
+            except json.JSONDecodeError:
+                entries.append({"error": "malformed", "line": line[:100]})
+    
+    return {
+        "total_lines": len(lines),
+        "last_entries": list(reversed(entries))
+    }
+
+
 if __name__ == "__main__":
     print(f"Starting Mintlayer Health API on http://127.0.0.1:3033")
     print(f"Reading health data from: {HEALTH_LOG}")
@@ -190,7 +241,7 @@ if __name__ == "__main__":
     
     uvicorn.run(
         "health_api:app",
-        host="127.0.0.1",
+        host="0.0.0.0",
         port=3033,
         log_level="info",
         reload=False
