@@ -83,10 +83,18 @@ def health():
             detail=f"Error reading health data: {str(e)}"
         )
 
+    # Extract and structure the data
+    node_data = data.get("node", {})
+    
     return {
         "timestamp": data.get("timestamp"),
         "overall_health": data.get("overall_health"),
-        "node": data.get("node", {}),
+        "node": {
+            "version": node_data.get("version"),
+            "network": node_data.get("network"),
+            "uptime_seconds": node_data.get("uptime_seconds"),
+            "start_time": node_data.get("start_time")
+        },
         "chain": data.get("chain", {}),
         "peers": data.get("peers", {}),
         "consensus": data.get("consensus", {}),
