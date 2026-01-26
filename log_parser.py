@@ -1,5 +1,6 @@
 import os
 import re
+import time
 from datetime import datetime, timezone
 
 # Full logs path in the home directory
@@ -99,10 +100,17 @@ def write_health_log(data, logs_dir):
         for error in data["errors"]:
             f.write(f"Address: {error['address']}, Message: {error['message']}\n")
 
-    print(f"Health log created at {health_path}")
+    print(f"[{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}] Health log updated at {health_path}")
+
+def run_polling(interval=30):
+    while True:
+        try:
+            most_recent_log = get_most_recent_log(LOGS_DIR)
+            data = parse_log_for_phase1(most_recent_log)
+            write_health_log(data, LOGS_DIR)
+        except Exception as e:
+            print(f"[{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}] Error: {e}")
+        time.sleep(interval)
 
 if __name__ == "__main__":
-    most_recent_log = get_most_recent_log(LOGS_DIR)
-    print(f"Parsing most recent log: {most_recent_log}")
-    data = parse_log_for_phase1(most_recent_log)
-    write_health_log(data, LOGS_DIR)
+    run_polling()
