@@ -1,116 +1,132 @@
 import os
-import re
+import json
 import time
 from datetime import datetime, timezone
 
-# Full logs path in the home directory
-LOGS_DIR = os.path.expanduser("~/.mintlayer/mainnet/logs")
-DAEMON_LOG = "mintlayer-node-daemon.log"
-GUI_LOG = "mintlayer-node-gui.log"
-HEALTH_LOG = "mintlayer-health.log"
+# Location of the logs and output
+LOG_DIR = os.path.expanduser("~/.mintlayer/mainnet/logs")
+HEALTH_LOG = os.path.join(LOG_DIR, "mintlayer-health.log")
+POLL_INTERVAL = 30  # seconds
 
-# Regex patterns for structured extraction
-BLOCK_PATTERN = re.compile(
-    r'NEW TIP in chainstate (\w+).*height (\d+), timestamp: (\d+)'
-)
-PEER_PATTERN = re.compile(
-    r'new peer accepted, peer_id: (\d+), address: SocketAddress\((.*?)\), role: (\w+), protocol_version: (\w+)'
-)
-ERROR_PATTERN = re.compile(
-    r'Failed to establish connection to SocketAddress\((.*?)\): (.*)'
-)
-
-def get_most_recent_log(logs_dir):
-    daemon_path = os.path.join(logs_dir, DAEMON_LOG)
-    gui_path = os.path.join(logs_dir, GUI_LOG)
+def get_latest_log_file():
+    daemon_log = os.path.join(LOG_DIR, "mintlayer-node-daemon.log")
+    gui_log = os.path.join(LOG_DIR, "mintlayer-node-gui.log")
 
     files = []
-    if os.path.exists(daemon_path):
-        files.append((daemon_path, os.path.getmtime(daemon_path)))
-    if os.path.exists(gui_path):
-        files.append((gui_path, os.path.getmtime(gui_path)))
+    if os.path.exists(daemon_log):
+        files.append(daemon_log)
+    if os.path.exists(gui_log):
+        files.append(gui_log)
 
     if not files:
-        raise FileNotFoundError("No log files found in the logs folder.")
+        return None
 
-    # Pick the most recently modified file
-    files.sort(key=lambda x: x[1], reverse=True)
-    return files[0][0]
+    # Return the file with the latest modification time
+    return max(files, key=os.path.getmtime)
 
-def parse_log_for_phase1(log_file):
-    phase1_data = {
-        "new_blocks": [],
-        "peers_connected": [],
-        "errors": []
+def parse_log_file(file_path):
+    """
+    Parses the latest log file and extracts Phase 1 data.
+    """
+    # Initialize default JSON structure
+    health_data = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "overall_health": "initializing",
+        "node": {
+            "version": None,
+            "network": None,
+            "uptime_seconds": None
+        },
+        "chain": {
+            "best_block": None,
+            "last_block_seen_seconds_ago": None,
+            "sync_stalled": False
+        },
+        "peers": {
+            "count": 0
+        },
+        "consensus": {
+            "fork_compatible": True
+        },
+        "errors": {
+            "db_error": False,
+            "panic": False
+        }
     }
 
-    with open(log_file, "r") as f:
-        for line in f:
-            line = line.strip()
-            
-            # New block entries
-            block_match = BLOCK_PATTERN.search(line)
-            if block_match:
-                block_id, height, timestamp = block_match.groups()
-                timestamp = datetime.fromtimestamp(int(timestamp), tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')
-                phase1_data["new_blocks"].append({
-                    "block_id": block_id,
-                    "height": int(height),
-                    "timestamp": timestamp
-                })
-                continue
+    try:
+        with open(file_path, "r") as f:
+            lines = f.readlines()
+    except Exception:
+        return health_data
 
-            # Peer connections
-            peer_match = PEER_PATTERN.search(line)
-            if peer_match:
-                peer_id, address, role, protocol = peer_match.groups()
-                phase1_data["peers_connected"].append({
-                    "peer_id": int(peer_id),
-                    "address": address,
-                    "role": role,
-                    "protocol": protocol
-                })
-                continue
+    # Example parsing logic (adjust regex or string matching as needed)
+    for line in reversed(lines):  # Reverse to get the most recent entries first
+        line = line.strip()
 
-            # Connection errors
-            error_match = ERROR_PATTERN.search(line)
-            if error_match:
-                address, message = error_match.groups()
-                phase1_data["errors"].append({
-                    "address": address,
-                    "message": message
-                })
+        # Node version
+        if "Node version:" in line and health_data["node"]["version"] is None:
+            health_data["node"]["version"] = line.split("Node version:")[-1].strip()
 
-    return phase1_data
+        # Network type
+        if "Network:" in line and health_data["node"]["network"] is None:
+            health_data["node"]["network"] = line.split("Network:")[-1].strip()
 
-def write_health_log(data, logs_dir):
-    health_path = os.path.join(logs_dir, HEALTH_LOG)
-    with open(health_path, "w") as f:
-        f.write(f"Mintlayer Phase 1 Health Log - Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}\n\n")
-        
-        f.write("=== New Blocks ===\n")
-        for block in data["new_blocks"]:
-            f.write(f"Block ID: {block['block_id']}, Height: {block['height']}, Timestamp: {block['timestamp']}\n")
-        
-        f.write("\n=== Peers Connected ===\n")
-        for peer in data["peers_connected"]:
-            f.write(f"Peer ID: {peer['peer_id']}, Address: {peer['address']}, Role: {peer['role']}, Protocol: {peer['protocol']}\n")
-        
-        f.write("\n=== Connection Errors ===\n")
-        for error in data["errors"]:
-            f.write(f"Address: {error['address']}, Message: {error['message']}\n")
+        # Uptime (in seconds)
+        if "Uptime seconds:" in line and health_data["node"]["uptime_seconds"] is None:
+            try:
+                health_data["node"]["uptime_seconds"] = int(line.split("Uptime seconds:")[-1].strip())
+            except ValueError:
+                pass
 
-    print(f"[{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}] Health log updated at {health_path}")
+        # Best block
+        if "Best block:" in line and health_data["chain"]["best_block"] is None:
+            health_data["chain"]["best_block"] = line.split("Best block:")[-1].strip()
 
-def run_polling(interval=30):
+        # Last block seen (seconds ago)
+        if "Last block seen seconds ago:" in line and health_data["chain"]["last_block_seen_seconds_ago"] is None:
+            try:
+                health_data["chain"]["last_block_seen_seconds_ago"] = int(line.split("Last block seen seconds ago:")[-1].strip())
+            except ValueError:
+                pass
+
+        # Peers count
+        if "Connected peers:" in line and health_data["peers"]["count"] == 0:
+            try:
+                health_data["peers"]["count"] = int(line.split("Connected peers:")[-1].strip())
+            except ValueError:
+                pass
+
+        # Sync stalled detection
+        if "Sync stalled" in line:
+            health_data["chain"]["sync_stalled"] = "true" in line.lower()
+
+        # Optional: Detect overall health changes based on conditions
+        if health_data["node"]["uptime_seconds"] is not None:
+            if health_data["chain"]["last_block_seen_seconds_ago"] is not None:
+                if health_data["chain"]["last_block_seen_seconds_ago"] > 60:
+                    health_data["overall_health"] = "degraded"
+                else:
+                    health_data["overall_health"] = "healthy"
+
+    return health_data
+
+def write_health_log(data):
+    try:
+        with open(HEALTH_LOG, "w") as f:
+            json.dump(data, f, indent=2)
+    except Exception as e:
+        print(f"Error writing health log: {e}")
+
+def main():
     while True:
-        try:
-            most_recent_log = get_most_recent_log(LOGS_DIR)
-            data = parse_log_for_phase1(most_recent_log)
-            write_health_log(data, LOGS_DIR)
-        except Exception as e:
-            print(f"[{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}] Error: {e}")
-        time.sleep(interval)
+        latest_file = get_latest_log_file()
+        if latest_file:
+            data = parse_log_file(latest_file)
+            write_health_log(data)
+        else:
+            print("No log files found in:", LOG_DIR)
+        time.sleep(POLL_INTERVAL)
 
 if __name__ == "__main__":
-    run_polling()
+    main()
