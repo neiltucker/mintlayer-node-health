@@ -91,9 +91,9 @@ def calculate_network_status(process_block_seconds_ago):
     """
     Calculate network status based on time since last process_block
     < 120 seconds: Optimal
-    2-4 minutes: Normal
-    4-8 minutes: Delayed
-    8-15 minutes: Degraded
+    2-5 minutes: Normal
+    5-10 minutes: Delayed
+    10-15 minutes: Degraded
     > 15 minutes: Offline
     """
     if process_block_seconds_ago is None:
@@ -101,9 +101,9 @@ def calculate_network_status(process_block_seconds_ago):
     
     if process_block_seconds_ago < 120:
         return "optimal"
-    elif process_block_seconds_ago < 240:
+    elif process_block_seconds_ago < 300:
         return "normal"
-    elif process_block_seconds_ago < 480:
+    elif process_block_seconds_ago < 600:
         return "delayed"
     elif process_block_seconds_ago < 900:
         return "degraded"
