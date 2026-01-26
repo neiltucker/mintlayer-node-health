@@ -1,6 +1,6 @@
 import os
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Full logs path in the home directory
 LOGS_DIR = os.path.expanduser("~/.mintlayer/mainnet/logs")
@@ -51,7 +51,7 @@ def parse_log_for_phase1(log_file):
             block_match = BLOCK_PATTERN.search(line)
             if block_match:
                 block_id, height, timestamp = block_match.groups()
-                timestamp = datetime.utcfromtimestamp(int(timestamp)).strftime('%Y-%m-%d %H:%M:%S UTC')
+                timestamp = datetime.fromtimestamp(int(timestamp), tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')
                 phase1_data["new_blocks"].append({
                     "block_id": block_id,
                     "height": int(height),
@@ -85,7 +85,7 @@ def parse_log_for_phase1(log_file):
 def write_health_log(data, logs_dir):
     health_path = os.path.join(logs_dir, HEALTH_LOG)
     with open(health_path, "w") as f:
-        f.write(f"Phase 1 Health Log - Generated: {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')}\n\n")
+        f.write(f"Mintlayer Phase 1 Health Log - Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}\n\n")
         
         f.write("=== New Blocks ===\n")
         for block in data["new_blocks"]:
