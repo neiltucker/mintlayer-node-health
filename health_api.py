@@ -1,7 +1,8 @@
 import json
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
@@ -59,6 +60,8 @@ def read_last_health_entry():
     
     raise ValueError("No valid JSON entries found in health log")
 
+
+app.mount("/ui", StaticFiles(directory=".", html=True), name="ui")
 
 @app.get("/")
 def root():
