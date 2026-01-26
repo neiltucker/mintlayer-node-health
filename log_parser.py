@@ -90,22 +90,22 @@ def version_compare_simple(version_string):
 def calculate_network_status(process_block_seconds_ago):
     """
     Calculate network status based on time since last process_block
-    < 60 seconds: Optimal
-    1-2 minutes: Normal
-    2-5 minutes: Delayed
-    5-10 minutes: Degraded
-    > 10 minutes: Offline
+    < 120 seconds: Optimal
+    2-4 minutes: Normal
+    4-8 minutes: Delayed
+    8-15 minutes: Degraded
+    > 15 minutes: Offline
     """
     if process_block_seconds_ago is None:
         return "unknown"
     
-    if process_block_seconds_ago < 60:
+    if process_block_seconds_ago < 120:
         return "optimal"
-    elif process_block_seconds_ago < 120:
+    elif process_block_seconds_ago < 240:
         return "normal"
-    elif process_block_seconds_ago < 300:
+    elif process_block_seconds_ago < 480:
         return "delayed"
-    elif process_block_seconds_ago < 600:
+    elif process_block_seconds_ago < 900:
         return "degraded"
     else:
         return "offline"
