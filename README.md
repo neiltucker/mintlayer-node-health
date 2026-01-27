@@ -84,7 +84,6 @@ early detection before full outage.
 
 ## Installation
 
-```bash
 # Clone the repository
 git clone https://github.com/neiltucker/mintlayer-node-health.git
 cd mintlayer-node-health
@@ -112,4 +111,3 @@ python health_api.py
 - Wallet & staking state
 - Disk and DB health
 - Alerting integrations
-
