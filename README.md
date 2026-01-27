@@ -92,7 +92,7 @@ cd mintlayer-node-health
 pip install -r requirements.txt
 
 # ⚠️  SECURITY WARNING  ⚠️
-# The health API will expose port 3033.  Configure your firewall to secure access to this port.
+# The health API will expose port 3033.  Configure your firewall to secure network access to this port.
 
 # Run the health monitor
 python log_parser.py &
@@ -118,6 +118,7 @@ curl -I http://127.0.0.1:3033/ui/mintlayer-health-ui.html  # Check if UI exists
 - Wallet & staking state
 - Disk and DB health
 - Alerting integrations
+
 
 
 
