@@ -91,11 +91,20 @@ cd mintlayer-node-health
 # Install dependencies
 pip install -r requirements.txt
 
+# ⚠️  SECURITY WARNING  ⚠️
+# The health API will expose port 3033 on ALL interfaces by default.
+# For production use, configure your firewall or run with --host 127.0.0.1
+# Example safe command: uvicorn health_api:app --host 127.0.0.1 --port 3033
+
 # Run the health monitor
 python log_parser.py &
 
-# Start the API server
-python health_api.py
+# Start the API server (choose ONE option below):
+python health_api.py  # Uses default host 0.0.0.0
+
+# Test endpoints (after starting the API):
+curl -s http://127.0.0.1:3033/health | jq .  # Requires jq for pretty JSON
+curl -I http://127.0.0.1:3033/ui/mintlayer-health-ui.html  # Check if UI exists
 ```
 ---
 
@@ -111,4 +120,5 @@ python health_api.py
 - Wallet & staking state
 - Disk and DB health
 - Alerting integrations
+
 
