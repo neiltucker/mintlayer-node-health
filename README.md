@@ -13,6 +13,21 @@ It enables node operators and network observers to:
 
 ---
 
+## Health Logic (Phase 1)
+
+A node is considered **healthy** if:
+
+- Network activity has occurred within the last **5 minutes**
+- Chain synchronization is not stalled (≤ 10 minutes)
+- At least one peer is connected
+- Node version is fork-compatible
+- No fatal or database errors are present
+
+Network health degrades progressively as inactivity increases, allowing
+early detection before full outage.
+
+--- 
+
 ## Components
 
 ### log_parser.py

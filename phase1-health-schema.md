@@ -19,6 +19,34 @@ Phase 1 focuses on **read-only, low-risk, operational health signals** that can 
 
 ---
 
+### Network State Derivation
+
+The `node.network` field is derived from the time since the most recent
+`process_block` log entry.
+
+| Inactivity Duration | Network State |
+|--------------------|---------------|
+| < 5 minutes        | optimal       |
+| 5–10 minutes       | normal        |
+| 10–15 minutes      | delayed       |
+| 15–30 minutes      | degraded      |
+| > 30 minutes       | offline       |
+| unavailable        | unknown       |
+
+--- 
+
+## Health Evaluation Summary
+
+A node is considered **healthy** when:
+
+- Network inactivity is **≤ 5 minutes**
+- Chain sync is not stalled (≤ 10 minutes since last block)
+- At least one peer is connected
+- Node version is fork-compatible
+- No fatal or database errors are detected
+
+--- 
+
 ## Top-Level Structure
 
 ```json
