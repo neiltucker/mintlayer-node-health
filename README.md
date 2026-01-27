@@ -82,11 +82,21 @@ early detection before full outage.
 
 ---
 
-## Non-Goals
-- Validator rewards
-- Wallet management
-- Consensus participation
-- Historical analytics
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/neiltucker/mintlayer-node-health.git
+cd mintlayer-node-health
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the health monitor
+python log_parser.py &
+
+# Start the API server
+python health_api.py
 
 ---
 
@@ -103,7 +113,3 @@ early detection before full outage.
 - Disk and DB health
 - Alerting integrations
 
----
-
-## License
-MIT (recommended)
