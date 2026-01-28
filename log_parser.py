@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from dateutil import parser as date_parser
 
 # Location of the logs and output
-LOG_DIR = os.path.expanduser("~/.miantlayer/mainnet/logs")
+LOG_DIR = os.path.expanduser("~/.mintlayer/mainnet/logs")
 HEALTH_LOG = os.path.join(LOG_DIR, "mintlayer-health.log")
 POLL_INTERVAL = 30  # seconds
 
