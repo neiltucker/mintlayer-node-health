@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from dateutil import parser as date_parser
 
 # Location of the logs and output
-LOG_DIR = os.path.expanduser("~/.miantlayer/mainnet/logs")
+LOG_DIR = os.path.expanduser("~/.mintlayer/mainnet/logs")
 HEALTH_LOG = os.path.join(LOG_DIR, "mintlayer-health.log")
 POLL_INTERVAL = 30  # seconds
 
@@ -90,22 +90,22 @@ def version_compare_simple(version_string):
 def calculate_network_status(process_block_seconds_ago):
     """
     Calculate network status based on time since last process_block
-    < 5 minutes: Optimal
-    5-10 minutes: Normal
-    10-15 minutes: Delayed
-    15-30 minutes: Degraded
-    > 30 minutes: Offline
+    < 60 seconds: Optimal
+    1-2 minutes: Normal
+    2-5 minutes: Delayed
+    5-10 minutes: Degraded
+    > 10 minutes: Offline
     """
     if process_block_seconds_ago is None:
         return "unknown"
     
-    if process_block_seconds_ago < 300:
+    if process_block_seconds_ago < 60:
         return "optimal"
-    elif process_block_seconds_ago < 600:
+    elif process_block_seconds_ago < 120:
         return "normal"
-    elif process_block_seconds_ago < 900:
+    elif process_block_seconds_ago < 300:
         return "delayed"
-    elif process_block_seconds_ago < 1800:
+    elif process_block_seconds_ago < 600:
         return "degraded"
     else:
         return "offline"
@@ -150,9 +150,8 @@ def parse_log_file(file_path):
         print(f"Error reading log file {file_path}: {e}")
         return health_data
 
-    # Track peer connections for estimate
-    peer_accepted_count = 0
-    peer_disconnected_count = 0
+    # Track peer connections by peer_id (Mintlayer-specific)
+    active_peer_ids = set()  # Track peer IDs that are currently connected
     
     # Variables to track
     node_start_time = None
@@ -193,12 +192,24 @@ def parse_log_file(file_path):
             if line_timestamp:
                 latest_process_block_time = line_timestamp
         
-        # 5. PEER TRACKING
-        if re.search(r'new\s+peer\s+accepted|peer\s+connection\s+accepted', line_stripped, re.IGNORECASE):
-            peer_accepted_count += 1
+        # 5. PEER TRACKING - Mintlayer uses peer_id system
+        # Pattern: "new peer accepted, peer_id: 15, address: ..."
+        peer_accepted = re.search(r'new\s+peer\s+accepted,\s+peer_id:\s+(\d+)', line_stripped, re.IGNORECASE)
+        if peer_accepted:
+            peer_id = int(peer_accepted.group(1))
+            active_peer_ids.add(peer_id)
         
-        if re.search(r'peer\s+disconnected|connection\s+closed', line_stripped, re.IGNORECASE):
-            peer_disconnected_count += 1
+        # Pattern: "peer disconnected, peer_id: 10, address: ..."
+        peer_disconnected = re.search(r'peer\s+disconnected,\s+peer_id:\s+(\d+)', line_stripped, re.IGNORECASE)
+        if peer_disconnected:
+            peer_id = int(peer_disconnected.group(1))
+            active_peer_ids.discard(peer_id)
+        
+        # Pattern: "block relay peer 5 is selected for eviction"
+        peer_evicted = re.search(r'peer\s+(\d+)\s+is\s+selected\s+for\s+eviction', line_stripped, re.IGNORECASE)
+        if peer_evicted:
+            peer_id = int(peer_evicted.group(1))
+            active_peer_ids.discard(peer_id)
         
         # 6. ERROR DETECTION
         if re.search(r'database\s+error|db\s+error|corruption|database.*fail', line_stripped, re.IGNORECASE):
@@ -239,7 +250,7 @@ def parse_log_file(file_path):
     health_data["node"]["network"] = calculate_network_status(process_block_age)
     
     # PEERS ESTIMATE
-    health_data["peers"]["peers_estimate"] = min(max(0, peer_accepted_count - peer_disconnected_count), 12)
+    health_data["peers"]["peers_estimate"] = max(0, peer_accepted_count - peer_disconnected_count)
     
     # FORK COMPATIBLE (version must be >= 1.2.0)
     if health_data["node"]["version"]:
