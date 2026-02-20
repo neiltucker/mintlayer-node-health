@@ -1,9 +1,6 @@
-## README.md
-
 # Mintlayer Node Health Monitoring (Phase 1)
 
-## Overview
-This project provides a **read-only health monitoring system** for Mintlayer nodes.
+This project provides a read-only health monitoring system for Mintlayer nodes.
 
 It enables node operators and network observers to:
 - Verify node health
@@ -11,20 +8,38 @@ It enables node operators and network observers to:
 - Confirm version compatibility
 - Safely expose health status
 
----
+## Design Philosophy
 
-## Health Logic (Phase 1)
+Mintlayer Node Health Monitor is intentionally designed to read **ONLY from log files**. 
+This "read-only, local-only" approach ensures:
 
-A node is considered **healthy** if:
+✅ **Maximum Security** - No RPC configuration required, no authentication secrets stored
+✅ **Zero Network Footprint** - The monitor makes no network connections
+✅ **Immediate Operation** - Works right after node installation with zero configuration
+✅ **Complete Transparency** - Anyone can audit that it only reads log files
+✅ **Universal Compatibility** - Works with any Mintlayer node deployment
 
-- Network activity has occurred within the last **5 minutes**
+This design choice means the monitor focuses on what it can observe safely and reliably
+from the logs, providing essential health metrics without introducing any additional
+risk to your node operation.
+
+## What This Monitor Does not Do
+
+❌ **Access wallet balances** - Never connects to RPC or reads wallet files
+❌ **Modify node configuration** - Read-only access only
+❌ **Require authentication** - No credentials needed or stored
+
+For wallet balances and staking information, use the official Mintlayer Wallet CLI or RPC
+commands directly. This monitor focuses on what it can observe reliably from logs alone.
+
+A node is considered healthy if:
+- Network activity has occurred within the last 5 minutes
 - Chain synchronization is not stalled (≤ 10 minutes)
 - At least one peer is connected
 - Node version is fork-compatible
 - No fatal or database errors are present
 
-Network health degrades progressively as inactivity increases, allowing
-early detection before full outage.
+Network health degrades progressively as inactivity increases, allowing early detection before full outage.
 
 --- 
 
@@ -118,6 +133,7 @@ curl -I http://127.0.0.1:3033/ui/mintlayer-health-ui.html  # Check if UI exists
 - Wallet & staking state
 - Disk and DB health
 - Alerting integrations
+
 
 
 
