@@ -1,4 +1,4 @@
-# Mintlayer Node Health Monitoring (Phase 1)
+# Mintlayer Node Health Monitoring
 
 This project provides a read-only health monitoring system for Mintlayer nodes.
 
@@ -89,14 +89,6 @@ Network health degrades progressively as inactivity increases, allowing early de
 
 ---
 
-## Phase 1 Goals
-- Operational visibility
-- Upgrade readiness detection
-- Network stability monitoring
-- Explorer integration readiness
-
----
-
 ## Installation
 ```bash
 # Clone the repository
@@ -119,21 +111,6 @@ python health_api.py
 curl -s http://127.0.0.1:3033/health | jq .  # Requires jq for pretty JSON
 curl -I http://127.0.0.1:3033/ui/mintlayer-health-ui.html  # Check if UI exists
 ```
----
-
-## Roadmap
-
-### Phase 1 (Completed)
-- Health schema
-- Log-based telemetry
-- Read-only API
-
-### Phase 2 (Planned)
-- RPC-based authoritative data
-- Wallet & staking state
-- Disk and DB health
-- Alerting integrations
-
 
 
 
