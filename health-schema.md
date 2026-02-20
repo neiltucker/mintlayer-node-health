@@ -1,4 +1,4 @@
-# Phase 1 Node Health Schema
+# Node Health Schema
 
 ## Overview
 This document defines the **Phase 1 Mintlayer Node Health Schema**.  
@@ -157,7 +157,7 @@ A node is considered **healthy** when:
 
 ---
 
-## Phase 1 Scope Limitations
+## Scope Limitations
 - No wallet data
 - No balances
 - No validator state
