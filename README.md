@@ -13,11 +13,11 @@ It enables node operators and network observers to:
 Mintlayer Node Health Monitor is intentionally designed to read **ONLY from log files**. 
 This "read-only, local-only" approach ensures:
 
-✅ **Maximum Security** - No RPC configuration required, no authentication secrets stored
-✅ **Zero Network Footprint** - The monitor makes no network connections
-✅ **Immediate Operation** - Works right after node installation with zero configuration
-✅ **Complete Transparency** - Anyone can audit that it only reads log files
-✅ **Universal Compatibility** - Works with any Mintlayer node deployment
+✅ **Maximum Security** - No RPC configuration required, no authentication secrets stored <br>
+✅ **Zero Network Footprint** - The monitor makes no network connections<br>
+✅ **Immediate Operation** - Works right after node installation with zero configuration<br>
+✅ **Complete Transparency** - Anyone can audit that it only reads log files<br>
+✅ **Universal Compatibility** - Works with any Mintlayer node deployment<br><br>
 
 This design choice means the monitor focuses on what it can observe safely and reliably
 from the logs, providing essential health metrics without introducing any additional
@@ -25,9 +25,9 @@ risk to your node operation.
 
 ## What This Monitor Does not Do
 
-❌ **Access wallet balances** - Never connects to RPC or reads wallet files
-❌ **Modify node configuration** - Read-only access only
-❌ **Require authentication** - No credentials needed or stored
+❌ **Access wallet balances** - Never connects to RPC or reads wallet files<br>
+❌ **Modify node configuration** - Read-only access only<br>
+❌ **Require authentication** - No credentials needed or stored<br><br>
 
 For wallet balances and staking information, use the official Mintlayer Wallet CLI or RPC
 commands directly. This monitor focuses on what it can observe reliably from logs alone.
@@ -133,6 +133,7 @@ curl -I http://127.0.0.1:3033/ui/mintlayer-health-ui.html  # Check if UI exists
 - Wallet & staking state
 - Disk and DB health
 - Alerting integrations
+
 
 
 
