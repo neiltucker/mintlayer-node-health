@@ -1,8 +1,8 @@
 # Node Health Schema
 
 ## Overview
-This document defines the **Phase 1 Mintlayer Node Health Schema**.  
-Phase 1 focuses on **read-only, low-risk, operational health signals** that can be safely exposed by node operators and consumed by dashboards, explorers, or monitoring systems.
+This document defines the **Mintlayer Node Health Schema**.  
+The Health Schema focuses on **read-only, low-risk, operational health signals** that can be safely exposed by node operators and consumed by dashboards, explorers, or monitoring systems.
 
 **Design goals**
 - Read-only
